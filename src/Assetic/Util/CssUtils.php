@@ -90,5 +90,23 @@ abstract class CssUtils
         return preg_replace_callback(self::REGEX_IE_FILTERS, $callback, $content, $limit, $count);
     }
 
+    /**
+     * Extracts all references from the supplied CSS content.
+     *
+     * @param string $content The CSS content
+     *
+     * @return array An array of unique URLs
+     */
+    public static function extractReferences($content)
+    {
+        $references = array();
+
+        self::filterReferences($content, function($matches) use(& $references) {
+            $references[] = $matches['url'];
+        });
+
+        return array_unique($references);
+    }
+
     final private function __construct() { }
 }
